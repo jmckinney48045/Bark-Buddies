@@ -1,0 +1,94 @@
+﻿@model IEnumerable<BarkBuddies.Data.Entities.PetMatch>
+
+@{
+    ViewData["Title"] = "My Pet Wish List";
+}
+<h1>Wish List</h1>
+
+@if (Model.Any() == true)
+{
+    <p>
+        @if (TempData.Peek("Adopted") != null)
+        {
+            @TempData["Adopted"]
+        }
+        @if (TempData.Peek("NotAdoptable") != null)
+        {
+            @TempData["NotAdoptable"]
+        }
+        @if (TempData.Peek("Removed") != null)
+        {
+            @TempData["Removed"]
+        }
+    </p>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Name)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Age)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Gender)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Size)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Breed)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Status)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Age)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Gender)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Size)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Breed)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Status)
+                    </td>
+                    <td>
+                        <a href="@item.Url" target="_blank">View Profile</a> |
+                        @if (item.Status == "Adoptable")
+                        {
+                            <a asp-action="Adopt" asp-route-id="@item.PetId">Adopt</a>
+                        }
+                        else
+                        {
+                            @: Adopt
+                        } |
+                        <a asp-action="Delete" asp-route-id="@item.PetId">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <a asp-controller="PetMatch" asp-action="Search" class="btn btn-primary">Search for pets to add</a>
+}
+<div>
+    <a asp-controller="Pet" asp-action="Index">My Pets</a> |
+    <a asp-controller="UserProfile" asp-action="Index">Home</a>
+</div>
